@@ -2,6 +2,7 @@ from flask import Flask,render_template, request, Response
 from openai import OpenAI
 from dotenv import load_dotenv
 from time import sleep
+from helpers import *
 
 import os
 
@@ -11,7 +12,9 @@ cliente = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 modelo = "gpt-4"
 
 app = Flask(__name__)
-app.secret_key = 'alura'
+app.secret_key = 'student'
+
+contexto = carrega("dados/ecomart.txt")
             
 def bot(prompt):
     maximo_tentativas = 1
@@ -22,6 +25,10 @@ def bot(prompt):
             prompt_do_sistema = f"""
             Você é um chatbot de atendimento a clientes de um e-commerce. 
             Você não deve responder perguntas que não sejam dados do e-commerce informado!
+            Você deve gerar resposta utilizando o contexto abaixo.
+
+            # Contexto
+            {contexto}
             """
             response = cliente.chat.completions.create(
                 messages=[
@@ -35,7 +42,7 @@ def bot(prompt):
                         }
                 ],
                 temperature=1,
-                max_tokens=256,
+                max_tokens=300,
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
