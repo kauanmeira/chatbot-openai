@@ -1,0 +1,8 @@
+#!/home/teiti12645/PycharmProjects/Projeto---3573-128d8b517ec1e2613f7fa7926e277e4853d0d9b3/chatbot/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+from charset_normalizer import cli
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(cli.cli_detect())
